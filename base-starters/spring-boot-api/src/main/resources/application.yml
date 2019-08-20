@@ -1,0 +1,23 @@
+server:
+  port: 8099
+  context-path: /gx/api
+
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.facebook.presto.jdbc.PrestoDriver
+    url: jdbc:presto://192.168.155.228:8080/mysql/base_demo
+    username: mysql
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 10
+      auto-commit: true
+      idle-timeout: 30000
+      pool-name: HikeriCp
+      max-lifetime: 60000
+      connection-timeout: 30000
+      connection-test-query: select 1
+
+logging:
+  level: debug
+

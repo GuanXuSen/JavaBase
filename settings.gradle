@@ -1,0 +1,10 @@
+rootProject.name = 'JavaBase'
+include 'base-starters'
+
+include 'base-starters:common-starter'
+findProject(':base-starters:common-starter')?.name = 'common-starter'
+
+include 'base-starters:spring-boot-api'
+findProject(':base-starters:spring-boot-api')?.name = 'spring-boot-api'
+
+
