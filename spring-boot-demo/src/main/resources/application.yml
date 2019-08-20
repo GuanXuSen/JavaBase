@@ -1,0 +1,7 @@
+server:
+  port: 8999
+  context-path: /
+
+logging:
+  level: debug
+
