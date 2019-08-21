@@ -7,13 +7,13 @@ import org.springframework.context.annotation.Bean;
 import javax.sql.DataSource;
 
 /**
- * @ClassName : prestohiveDataSourceConfiguration
+ * @ClassName : PrestoHiveDataSourceConfiguration
  * @Description :TOO
  * @Author : gx
  * @Date : 2019/8/15 16:54
  * @Version : 1.0
  */
-public class prestohiveDataSourceConfiguration {
+public class PrestoHiveDataSourceConfiguration {
 
     @Bean
     @ConfigurationProperties(prefix = "")
