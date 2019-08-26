@@ -11,4 +11,5 @@ include 'base-starter:demo-test'
 findProject(':base-starter:demo-test')?.name = 'demo-test'
 include 'base-starters:demo-test'
 findProject(':base-starters:demo-test')?.name = 'demo-test'
+include 'scala-spark-demo'
 
