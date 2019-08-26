@@ -24,7 +24,7 @@ public class WordCountJavaApi {
     public static void main(String[] args) {
         // 创建SparkConf
         SparkConf conf = new SparkConf()
-                .setAppName("AggregateByKeyJava")
+                .setAppName("WordCountJavaApi")
                 // 使用本地模式 "2147480000"
                 .setMaster("local")
                 .set("spark.testing.memory", "2147480000");
