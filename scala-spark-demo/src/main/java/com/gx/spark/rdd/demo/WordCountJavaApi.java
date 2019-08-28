@@ -1,4 +1,4 @@
-package com.gx.spark;
+package com.gx.spark.rdd.demo;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
