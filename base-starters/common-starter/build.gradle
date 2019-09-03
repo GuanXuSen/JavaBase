@@ -10,11 +10,8 @@ repositories {
 }
 
 dependencies {
-    //testCompile group: 'junit', name: 'junit', version: '4.12'
-
     compile group: 'com.google.guava', name: 'guava', version: '27.0.1-jre'
     compile group: 'org.projectlombok', name: 'lombok', version: '1.16.22'
-
 
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
     compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
@@ -22,8 +19,8 @@ dependencies {
 
     compile group: 'com.alibaba', name: 'fastjson', version: '1.2.56'
 
-    // https://mvnrepository.com/artifact/commons-io/commons-io
     compile group: 'commons-io', name: 'commons-io', version: '2.4'
 
+    compile group: 'org.apache.poi', name: 'poi', version: '4.1.0'
 
 }

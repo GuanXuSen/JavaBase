@@ -2,9 +2,10 @@ package com.gx.sbd.controllers;
 
 import com.gx.sbd.servers.DemoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @ClassName : DemoController
@@ -23,6 +24,16 @@ public class DemoController {
     @PostMapping("/dt1")
     public Object demo1(){
         return demoService.demo1();
+    }
+
+    @PostMapping("/paramTest")
+    public Object paramTest(@RequestParam("pam") DemoParam param, @RequestParam("file")MultipartFile file, HttpServletRequest request){
+
+        System.out.println(param.toString());
+
+        System.out.println(file.getName());
+
+        return "ok";
     }
 
 }
