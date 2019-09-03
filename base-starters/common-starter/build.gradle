@@ -21,6 +21,8 @@ dependencies {
 
     compile group: 'commons-io', name: 'commons-io', version: '2.4'
 
+    //poi excel 必须
     compile group: 'org.apache.poi', name: 'poi', version: '4.1.0'
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.0'
 
 }
