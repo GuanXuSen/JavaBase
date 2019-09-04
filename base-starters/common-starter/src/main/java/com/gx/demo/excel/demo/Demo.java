@@ -1,8 +1,8 @@
-package com.gx.sbd.excel.demo;
+package com.gx.demo.excel.demo;
 
 
 import com.google.common.collect.Lists;
-import com.gx.sbd.excel.ExcelUtil;
+import com.gx.demo.excel.ExcelUtil;
 
 import java.io.File;
 import java.util.List;
@@ -19,6 +19,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Demo {
 
+    /**
+     * 计数操作
+     */
     private static void test1(){
         List<String> allList = Lists.newArrayList();
         for(int i = 1; i<= 1000;i++){
@@ -42,25 +45,47 @@ public class Demo {
         });
     }
 
-    public static void main(String[] args) {
+
+    /**
+     * excel 读取
+     */
+    private static void test2(){
         String filePath_xlsx = "E:\\gxtest.xlsx";
         String filePath_xls = "E:\\gxtest.xls";
 
-
         File xlsFile = new File(filePath_xlsx);
 
-       // File xlxsFile = new File(filePath_xlsx);
+        // File xlxsFile = new File(filePath_xlsx);
 
-    Map<String,List<List<String>>> map = ExcelUtil.createExcelReader()
-            .setFile(xlsFile)
-            .skipFirstLine()
-            .read();
+        Map<String,List<List<String>>> map = ExcelUtil.createExcelReader()
+                .setFile(xlsFile)
+                .skipFirstLine()
+                .read();
 
         Set<String> sheetNames = map.keySet();
 
         sheetNames.forEach(System.out::println);
+    }
 
 
+    /**
+     * excel 输出
+     */
+    private static void test3(){
+        String fileName = "测试.xlsx";
+
+
+    }
+
+
+    /**
+     * 主函数
+     * @param args
+     */
+    public static void main(String[] args) {
+
+
+        test3();
 
     }
 

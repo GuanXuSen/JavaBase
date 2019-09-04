@@ -1,4 +1,4 @@
-package com.gx.sbd.excel.demo;
+package com.gx.demo.excel.demo;
 
 import lombok.Data;
 import lombok.ToString;

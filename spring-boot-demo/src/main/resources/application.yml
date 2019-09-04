@@ -1,6 +1,11 @@
 server:
   port: 8999
   context-path: /
+  tomcat:
+    uri-encoding: utf-8
+    max-http-post-size: 100
+
+
 
 logging:
   level: debug

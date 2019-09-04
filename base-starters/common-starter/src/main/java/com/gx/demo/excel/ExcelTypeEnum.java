@@ -1,4 +1,4 @@
-package com.gx.sbd.excel;
+package com.gx.demo.excel;
 
 /**
  * @ClassName : ExcelTypeEnum
@@ -26,7 +26,7 @@ public enum ExcelTypeEnum {
     public String getName(){return this.name;}
 
 
-    public ExcelTypeEnum getByCode(Integer code){
+    public static ExcelTypeEnum getByCode(Integer code){
          ExcelTypeEnum excelTypeEnum = ExcelTypeEnum.OTHER;
          for(ExcelTypeEnum typeEnum : ExcelTypeEnum.values()){
              if(code == typeEnum.getCode()){
@@ -36,7 +36,7 @@ public enum ExcelTypeEnum {
          return excelTypeEnum;
     }
 
-    public ExcelTypeEnum getByName(String name){
+    public static ExcelTypeEnum getByName(String name){
         ExcelTypeEnum excelTypeEnum = ExcelTypeEnum.OTHER;
         for(ExcelTypeEnum typeEnum : ExcelTypeEnum.values()){
             if(typeEnum.getName().equals(name)){
@@ -44,6 +44,16 @@ public enum ExcelTypeEnum {
             }
         }
         return excelTypeEnum;
+    }
+
+    public static ExcelTypeEnum getByFileName(String fileName){
+        ExcelTypeEnum typeEnum = null;
+        for (ExcelTypeEnum type : ExcelTypeEnum.values()){
+            if(fileName.endsWith(type.getName())){
+                typeEnum = type;
+            }
+        }
+        return typeEnum;
     }
 
 }

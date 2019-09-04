@@ -1,9 +1,11 @@
-package com.gx.sbd.excel;
+package com.gx.demo.excel;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.commons.lang.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
-
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import java.io.*;
 import java.util.*;
 import java.util.function.BiFunction;
@@ -19,10 +21,17 @@ import java.util.stream.Stream;
  */
 public class ExcelUtil {
 
-    public ExcelUtil(){
+    /**
+     * 导出缓冲
+     */
+    private static final Integer MAX_WRItE_ROW_ACCESS = 1000;
 
-    }
+    public ExcelUtil(){}
 
+    /**
+     * 创建读取
+     * @return
+     */
     public static ExcelReader createExcelReader(){
         return new ExcelReader();
     }
@@ -216,6 +225,115 @@ public class ExcelUtil {
                 break;
         }
         return cellValue;
+    }
+
+
+    /**
+     * 创建输出
+     * @return
+     */
+    public static ExcelWriter createExcelWriter(){
+        return new ExcelWriter();
+    }
+
+    /**
+     * excel 输出
+     */
+    public static class ExcelWriter{
+
+        private  String fileName;
+
+        private OutputStream outputStream;
+
+        private ExcelDTO allDatas;
+
+
+        public ExcelWriter setFileName ( String fileName){
+            this.fileName = fileName;
+            return this;
+        }
+
+        public ExcelWriter setOutputStream ( OutputStream outputStream){
+            this.outputStream = outputStream;
+            return this;
+        }
+
+        public ExcelWriter setDatas(ExcelDTO excelDTO){
+            this.allDatas = excelDTO;
+            return this;
+        }
+
+        public void writeToSheet(Workbook wb,String sheetName,List<List<String>> data){
+            Sheet sheet = wb.createSheet(sheetName);
+            writeRow(sheet,data);
+        }
+
+        public void writeRow(Sheet sheet,List<List<String>> data){
+            for(int i = 0 ; i < data.size(); i++){
+                Row row = sheet.createRow(i);
+                writeCell(row,data.get(i));
+            }
+        }
+
+        public void writeCell(Row row,List<String> data){
+            for (int i = 0; i < data.size(); i++){
+                Cell cell = row.createCell(i);
+                cell.setCellValue(data.get(i));
+            }
+        }
+
+        //todo 待完善
+        public void write(){
+            try {
+            //获取工作薄
+            Workbook workbook = getWorkBook(this.fileName);
+            //获取 sheet 和 头部
+            Map<String,List<String>> sheetsAndTitles = allDatas.getSheets();
+            Map<String,List<List<String>>> sheetsAndDatas = allDatas.getDatas();
+            //写数据
+            for(String sheetName : sheetsAndTitles.keySet()){
+                List<List<String>> data = Lists.newLinkedList();
+                data.add(sheetsAndTitles.get(sheetName));
+                data.addAll(sheetsAndDatas.get(sheetName));
+                writeToSheet(workbook,sheetName,data);
+            }
+
+            workbook.write(outputStream);
+            workbook.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+
+    }
+
+    /**
+     * 获取工作薄
+     * @param fileName
+     * @return
+     */
+    public static Workbook getWorkBook( String fileName){
+        Workbook wb = null;
+        if(StringUtils.isBlank(fileName)){
+            return wb;
+        }
+        ExcelTypeEnum typeEnum = ExcelTypeEnum.getByFileName(fileName);
+        switch (typeEnum){
+            case XLS:
+                wb = new HSSFWorkbook();
+                break;
+            case XLSX:
+                SXSSFWorkbook sxssfWorkbook = new SXSSFWorkbook(MAX_WRItE_ROW_ACCESS);
+                sxssfWorkbook.setCompressTempFiles(true);
+                wb = sxssfWorkbook;
+                break;
+            default:
+                break;
+        }
+        return wb;
     }
 
 }
