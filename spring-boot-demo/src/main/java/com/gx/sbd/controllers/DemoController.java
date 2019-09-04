@@ -5,12 +5,14 @@ import com.google.common.collect.Maps;
 import com.gx.demo.excel.ExcelDTO;
 import com.gx.demo.excel.ExcelUtil;
 import com.gx.sbd.servers.DemoService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
@@ -31,21 +33,50 @@ public class DemoController {
     @Autowired
     private DemoService demoService;
 
+    /**
+     * 测试
+     * @return
+     */
     @PostMapping("/dt1")
     public Object demo1(){
         return demoService.demo1();
     }
 
+    /**
+     * 文件上传
+     * @param param
+     * @param file
+     * @param request
+     * @return
+     */
     @PostMapping("/paramTest")
-    public Object paramTest(@RequestParam("pam") DemoParam param, @RequestParam("file")MultipartFile file, HttpServletRequest request){
+    public Object paramTest(@RequestParam("pam") String param, @RequestParam("file")MultipartFile file, HttpServletRequest request){
 
         System.out.println(param.toString());
 
         System.out.println(file.getName());
 
+        try{
+           Map<String,List<List<String>>> map = ExcelUtil.createExcelReader()
+                    .setFileName(file.getName())
+                    .setFileInputStream((FileInputStream) file.getInputStream())
+                    .skipFirstLine()
+                    .read();
+            System.out.println(map.keySet());
+            map.entrySet().forEach(System.out::println);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
         return "ok";
     }
 
+    /**
+     * excel 文件下载
+     * @param request
+     * @param response
+     */
     @GetMapping("/down1")
     public void download(HttpServletRequest request, HttpServletResponse response){
         try {
