@@ -4,12 +4,7 @@ include 'base-starters'
 include 'base-starters:common-starter'
 findProject(':base-starters:common-starter')?.name = 'common-starter'
 
-include 'base-test-demo'
 include 'spring-boot-presto-demo'
 include 'spring-boot-demo'
-include 'base-starter:demo-test'
-findProject(':base-starter:demo-test')?.name = 'demo-test'
-include 'base-starters:demo-test'
-findProject(':base-starters:demo-test')?.name = 'demo-test'
 include 'scala-spark-demo'
 

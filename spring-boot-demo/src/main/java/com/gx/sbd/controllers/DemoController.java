@@ -2,6 +2,7 @@ package com.gx.sbd.controllers;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.gx.demo.CommonBaseConstants;
 import com.gx.demo.excel.ExcelDTO;
 import com.gx.demo.excel.ExcelUtil;
 import com.gx.demo.utils.BaseResponse;
@@ -50,22 +51,18 @@ public class DemoController {
      */
     @PostMapping("/upload")
     public Object paramTest(@RequestParam("file")MultipartFile file, HttpServletRequest request){
-
         BaseResponse response = BaseResponse.newInstance();
-
         try{
            Map<String,List<List<String>>> map = ExcelUtil.createExcelReader()
                     .setFileName(file.getName())
                     .setFileInputStream((FileInputStream) file.getInputStream())
                     .skipFirstLine()
                     .read();
-            response.success().put("data",map);
+            response.success().put(CommonBaseConstants.DATE_KEY,map);
         }catch (Exception e){
             e.printStackTrace();
-            response.fail();
+            response.fail(CommonBaseConstants.FAIL_NAME);
         }
-
-
         return response.toResponseMap();
     }
 
