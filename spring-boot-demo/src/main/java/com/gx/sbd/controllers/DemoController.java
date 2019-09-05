@@ -4,8 +4,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.gx.demo.excel.ExcelDTO;
 import com.gx.demo.excel.ExcelUtil;
+import com.gx.demo.utils.BaseResponse;
 import com.gx.sbd.servers.DemoService;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,17 +44,14 @@ public class DemoController {
 
     /**
      * 文件上传
-     * @param param
      * @param file
      * @param request
      * @return
      */
-    @PostMapping("/paramTest")
-    public Object paramTest(@RequestParam("pam") String param, @RequestParam("file")MultipartFile file, HttpServletRequest request){
+    @PostMapping("/upload")
+    public Object paramTest(@RequestParam("file")MultipartFile file, HttpServletRequest request){
 
-        System.out.println(param.toString());
-
-        System.out.println(file.getName());
+        BaseResponse response = BaseResponse.newInstance();
 
         try{
            Map<String,List<List<String>>> map = ExcelUtil.createExcelReader()
@@ -62,14 +59,14 @@ public class DemoController {
                     .setFileInputStream((FileInputStream) file.getInputStream())
                     .skipFirstLine()
                     .read();
-            System.out.println(map.keySet());
-            map.entrySet().forEach(System.out::println);
+            response.success().put("data",map);
         }catch (Exception e){
             e.printStackTrace();
+            response.fail();
         }
 
 
-        return "ok";
+        return response.toResponseMap();
     }
 
     /**
