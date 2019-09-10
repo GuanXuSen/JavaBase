@@ -61,7 +61,7 @@ public class RequestAspect {
     @AfterReturning(returning = "object",pointcut = "RequestPointCut()")
     public void doAfterReturning(Object object){
         if(null!=object && !(object instanceof ModelAndView)){
-            logger.info("\n\t response: {}",JSON.toJSONString(object));
+            logger.info("response: {}",JSON.toJSONString(object));
         }
     }
 

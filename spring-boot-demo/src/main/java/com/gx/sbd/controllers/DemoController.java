@@ -17,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -43,19 +44,14 @@ public class DemoController {
      * @return
      */
     @PostMapping("/upload")
-    public Object paramTest(@RequestParam("file")MultipartFile file, HttpServletRequest request){
+    public Object paramTest(@RequestParam("file")MultipartFile file, HttpServletRequest request) throws IOException {
         BaseResponse response = BaseResponse.newInstance();
-        try{
-           Map<String,List<List<String>>> map = ExcelUtil.createExcelReader()
-                    .setFileName(file.getName())
-                    .setFileInputStream((FileInputStream) file.getInputStream())
-                    .skipFirstLine()
-                    .read();
-            response.success().put(CommonBaseConstants.DATE_KEY,map);
-        }catch (Exception e){
-            e.printStackTrace();
-            response.fail(CommonBaseConstants.FAIL_NAME);
-        }
+       Map<String,List<List<String>>> map = ExcelUtil.createExcelReader()
+                .setFileName(file.getName())
+                .setFileInputStream((FileInputStream) file.getInputStream())
+                .skipFirstLine()
+                .read();
+       response.success().put(CommonBaseConstants.DATE_KEY,map);
         return response.toResponseMap();
     }
 
@@ -66,25 +62,19 @@ public class DemoController {
      * @return
      */
     @PostMapping("/upload2")
-    public Object upload(@RequestParam("files") MultipartFile[] files, HttpServletRequest request){
+    public Object upload(@RequestParam("files") MultipartFile[] files, HttpServletRequest request) throws IOException {
         BaseResponse response = BaseResponse.newInstance();
-        try{
-            List<Map<String,List<List<String>>>> rst = Lists.newLinkedList();
-            for (MultipartFile file : files){
-                Map<String,List<List<String>>> map = ExcelUtil.createExcelReader()
-                        .setFileName(file.getName())
-                        .setFileInputStream((FileInputStream) file.getInputStream())
-                        .skipFirstLine()
-                        .read();
+        List<Map<String,List<List<String>>>> rst = Lists.newLinkedList();
+        for (MultipartFile file : files){
+            Map<String,List<List<String>>> map = ExcelUtil.createExcelReader()
+                    .setFileName(file.getName())
+                    .setFileInputStream((FileInputStream) file.getInputStream())
+                    .skipFirstLine()
+                    .read();
 
-                rst.add(map);
-            }
-
-            response.success().put(CommonBaseConstants.DATE_KEY,rst);
-        }catch (Exception e){
-            e.printStackTrace();
-            response.fail(CommonBaseConstants.FAIL_NAME);
+            rst.add(map);
         }
+        response.success().put(CommonBaseConstants.DATE_KEY,rst);
         return response.toResponseMap();
     }
 
@@ -96,48 +86,41 @@ public class DemoController {
      * @param response
      */
     @GetMapping("/down")
-    public void download(HttpServletRequest request, HttpServletResponse response){
-        try {
-            String fileName = "测试.xls";
-            response.setContentType("application/vnd.ms-excel");
-            response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(fileName,"UTF-8"));
-            OutputStream outputStream = response.getOutputStream();
+    public void download(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String fileName = "测试.xls";
+        response.setContentType("application/vnd.ms-excel");
+        response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(fileName,"UTF-8"));
+        OutputStream outputStream = response.getOutputStream();
 
-            ExcelDTO dto = new ExcelDTO();
-            dto.setFileName(fileName);
-            String sheetName = "zs1";
-            List<String> titles = Lists.newLinkedList();
-            titles.add("编号");
-            titles.add("名称");
-            Map<String,List<String>> sheetAndTitles = Maps.newHashMap();
-            sheetAndTitles.put(sheetName,titles);
-            dto.setSheets(sheetAndTitles);
+        ExcelDTO dto = new ExcelDTO();
+        dto.setFileName(fileName);
+        String sheetName = "zs1";
+        List<String> titles = Lists.newLinkedList();
+        titles.add("编号");
+        titles.add("名称");
+        Map<String,List<String>> sheetAndTitles = Maps.newHashMap();
+        sheetAndTitles.put(sheetName,titles);
+        dto.setSheets(sheetAndTitles);
 
-            List<List<String>> datas = Lists.newLinkedList();
-            for (int i = 0; i < 100; i++) {
-                List<String> list = Lists.newLinkedList();
-                list.add("ASSSSSS"+i);
-                list.add("名字是:"+i);
-                datas.add(list);
-            }
-
-
-            Map<String,List<List<String>>> sheetAndDatas = Maps.newHashMap();
-            sheetAndDatas.put(sheetName,datas);
-            dto.setDatas(sheetAndDatas);
-
-            ExcelUtil.createExcelWriter()
-                    .setFileName(fileName)
-                    .setDatas(dto)
-                    .setOutputStream(outputStream)
-                    .write();
-
-            outputStream.flush();
-            outputStream.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        List<List<String>> datas = Lists.newLinkedList();
+        for (int i = 0; i < 100; i++) {
+            List<String> list = Lists.newLinkedList();
+            list.add("ASSSSSS"+i);
+            list.add("名字是:"+i);
+            datas.add(list);
         }
+
+        Map<String,List<List<String>>> sheetAndDatas = Maps.newHashMap();
+        sheetAndDatas.put(sheetName,datas);
+        dto.setDatas(sheetAndDatas);
+
+        ExcelUtil.createExcelWriter()
+                .setFileName(fileName)
+                .setDatas(dto)
+                .setOutputStream(outputStream)
+                .write();
+        outputStream.flush();
+        outputStream.close();
     }
 
     /**
@@ -156,8 +139,7 @@ public class DemoController {
     @GetMapping("/gxd")
     public Object demo2(){
         BaseResponse response = BaseResponse.newInstance();
-
-
+        response.success().put(CommonBaseConstants.DATE_KEY,new Date());
         return response;
     }
 }
