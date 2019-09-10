@@ -3,7 +3,7 @@ server:
   context-path: /
   tomcat:
     uri-encoding: utf-8
-    max-http-post-size: 100
+    max-http-post-size: 1000
 
 
 
@@ -12,3 +12,6 @@ logging:
 
 
 
+spring:
+  redis:
+    host:

@@ -11,6 +11,7 @@ import lombok.Data;
  */
 @Data
 public class DemoParam {
+
     private String id;
 
     private String name;
