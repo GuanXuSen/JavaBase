@@ -3,6 +3,8 @@
 * base-starters  基础工具类等
 * spring-boot-presto-demo   presto分布式查询测试用例
 * scala-spark-demo  scala 和 spark 测试用例
+* spring-boot-demo  基础手脚架（带完善）
+
 
 
 ***
