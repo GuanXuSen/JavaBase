@@ -37,7 +37,9 @@ public class AppConfig  {
                 SerializerFeature.WriteMapNullValue,
                 SerializerFeature.WriteNullListAsEmpty,
                 SerializerFeature.WriteNullNumberAsZero,
-                SerializerFeature.WriteNullStringAsEmpty
+                SerializerFeature.WriteNullStringAsEmpty,
+                //时间转换
+                SerializerFeature.WriteDateUseDateFormat
         );
         // 4.处理中文乱码问题
         List<MediaType> fastMediaTypes = new ArrayList<>();

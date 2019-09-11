@@ -2,6 +2,8 @@ package com.gx.demo.utils;
 
 
 import com.google.common.collect.Maps;
+import com.gx.demo.CommonBaseConstants;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -68,6 +70,9 @@ public class BaseResponse implements Serializable {
         return this;
     }
 
+
+
+
     public BaseResponse success(){
         return this.success(ResultCodeEnum.SUCCESS.getMessage());
     }
@@ -77,6 +82,61 @@ public class BaseResponse implements Serializable {
         this.message = message;
         return this;
     }
+
+    public BaseResponse fail403(){
+        this.code = CommonBaseConstants.CODE_403;
+        this.message = CommonBaseConstants.CODE_403_NAME;
+        return this;
+    }
+    public BaseResponse fail404(){
+        this.code = CommonBaseConstants.CODE_404;
+        this.message = CommonBaseConstants.CODE_404_NAME;
+        return this;
+    }
+    public BaseResponse fail405(){
+        this.code = CommonBaseConstants.CODE_405;
+        this.message = CommonBaseConstants.CODE_405_NAME;
+        return this;
+    }
+    public BaseResponse fail500(){
+        this.code = CommonBaseConstants.CODE_500;
+        this.message = CommonBaseConstants.CODE_500_NAME;
+        return this;
+    }
+
+    public BaseResponse fail403(String message){
+        this.code = CommonBaseConstants.CODE_403;
+        this.message = CommonBaseConstants.CODE_403_NAME;
+        if(StringUtils.isNotBlank(message)){
+            this.message = message;
+        }
+        return this;
+    }
+    public BaseResponse fail404(String message){
+        this.code = CommonBaseConstants.CODE_404;
+        this.message = CommonBaseConstants.CODE_404_NAME;
+        if(StringUtils.isNotBlank(message)){
+            this.message = message;
+        }
+        return this;
+    }
+    public BaseResponse fail405(String message){
+        this.code = CommonBaseConstants.CODE_405;
+        this.message = CommonBaseConstants.CODE_405_NAME;
+        if(StringUtils.isNotBlank(message)){
+            this.message = message;
+        }
+        return this;
+    }
+    public BaseResponse fail500(String message){
+        this.code = CommonBaseConstants.CODE_500;
+        this.message = CommonBaseConstants.CODE_500_NAME;
+        if(StringUtils.isNotBlank(message)){
+            this.message = message;
+        }
+        return this;
+    }
+
 
     public BaseResponse fail(){
         return fail(ResultCodeEnum.FAIL.getMessage());

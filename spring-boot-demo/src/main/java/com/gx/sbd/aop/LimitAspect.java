@@ -6,12 +6,14 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.RateLimiter;
 import com.gx.sbd.annotation.ServiceLimit;
 import com.gx.sbd.exception.BaseException;
+import com.gx.sbd.utils.IPUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.context.annotation.Configuration;
+
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 
@@ -53,7 +55,7 @@ public class LimitAspect {
         Object obj = null;
         try {
             if(limitType.equals(ServiceLimit.LimitType.IP)){
-              //  key = IPUtils.getIpAddr();
+                key = IPUtil.getIpAddress();
             }
             RateLimiter rateLimiter = caches.get(key);
             Boolean flag = rateLimiter.tryAcquire();

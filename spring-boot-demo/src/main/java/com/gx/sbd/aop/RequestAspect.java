@@ -2,6 +2,7 @@ package com.gx.sbd.aop;
 
 import com.alibaba.fastjson.JSON;
 import com.gx.demo.utils.BaseResponse;
+import com.gx.sbd.utils.IPUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -44,11 +45,17 @@ public class RequestAspect {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("HTTP_METHOD",request.getMethod());
             jsonObject.put("URL",request.getRequestURI());
-            jsonObject.put("IP",request.getRemoteAddr());
-            jsonObject.put("CLASS_METHOD",point.getSignature().getDeclaringTypeName() + " . " + point.getSignature().getName());
-            String message = "\n\t"+jsonObject.toString();
-            if(null !=firstObj && !(firstObj instanceof ServletRequest) && !(firstObj instanceof ServletResponse)){
-                message += "\n\t" + "request: " + JSON.toJSONString(firstObj);
+            jsonObject.put("IP", IPUtil.getIpAddress());
+            jsonObject.put("CLASS_METHOD",
+                    point.getSignature().getDeclaringTypeName()
+                            + " || " +
+                           point.getSignature().getName()
+            );
+            String message = "\n\t request: " + jsonObject.toString();
+            if(null != firstObj
+                    && !(firstObj instanceof ServletRequest)
+                    && !(firstObj instanceof ServletResponse)){
+                message += JSON.toJSONString(firstObj);
 
             }
             logger.info(message);
@@ -61,7 +68,7 @@ public class RequestAspect {
     @AfterReturning(returning = "object",pointcut = "RequestPointCut()")
     public void doAfterReturning(Object object){
         if(null!=object && !(object instanceof ModelAndView)){
-            logger.info("response: {}",JSON.toJSONString(object));
+            logger.info("\n\t response: {}",JSON.toJSONString(object));
         }
     }
 
