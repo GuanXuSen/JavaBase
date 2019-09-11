@@ -12,6 +12,6 @@ logging:
 
 
 
-spring:
-  redis:
-    host:
+#spring:
+#  redis:
+#    host:
