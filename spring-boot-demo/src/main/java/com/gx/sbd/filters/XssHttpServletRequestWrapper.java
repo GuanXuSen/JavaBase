@@ -1,15 +1,16 @@
 package com.gx.sbd.filters;
 
-import com.alibaba.fastjson.JSONObject;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.alibaba.fastjson.JSON;
+import org.apache.commons.text.StringEscapeUtils;
 
-
+import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @ClassName : XssHttpServletRequestWrapper
@@ -20,41 +21,89 @@ import java.io.IOException;
  */
 public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper{
 
-    private byte[] originBody;
-
-    private byte[] xssBody;
-
-    private String originBodyString;
-
-    private String xssBodyString;
-
-    private JSONObject xssJson;
-
-    private BufferedReader reader;
-
-    private ServletInputStream servletInputStream;
-
-
-    public XssHttpServletRequestWrapper(HttpServletRequest request) throws IOException{
+    public XssHttpServletRequestWrapper(HttpServletRequest request) {
         super(request);
-        initRequestBody(request);
     }
 
-    private void initRequestBody(HttpServletRequest request) throws IOException{
-        originBody = IOUtils.toByteArray(request.getInputStream());
-        originBodyString = new String(originBody);
-        if(StringUtils.isNotBlank(originBodyString)){
-            xssJson = buildJsonObject(originBodyString);
+    @Override
+    public String getHeader(String name) {
+        return StringEscapeUtils.escapeHtml4(super.getHeader(name));
+    }
+
+    @Override
+    public String getQueryString() {
+        return StringEscapeUtils.escapeHtml4(super.getQueryString());
+    }
+
+    @Override
+    public String getParameter(String name) {
+        return StringEscapeUtils.escapeHtml4(super.getParameter(name));
+    }
+
+    @Override
+    public String[] getParameterValues(String name) {
+        String[] values = super.getParameterValues(name);
+        if(values != null) {
+            int length = values.length;
+            String[] escapseValues = new String[length];
+            for(int i = 0; i < length; i++){
+                escapseValues[i] = StringEscapeUtils.escapeHtml4(values[i]);
+            }
+            return escapseValues;
         }
+        return values;
     }
 
-    /**
-     * 过滤 json
-     * @return
-     */
-    private JSONObject buildJsonObject(String xssJsonString){
-        JSONObject jsonObject = new JSONObject();
-        JSONObject xssJsonObject = JSONObject.parseObject(xssJsonString);
-        return jsonObject;
+    @Override
+    public ServletInputStream getInputStream() throws IOException {
+        String str=getRequestBody(super.getInputStream());
+        Map<String,Object> map= JSON.parseObject(str,Map.class);
+        Map<String,Object> resultMap=new HashMap<>(map.size());
+        for(String key:map.keySet()){
+            Object val=map.get(key);
+            if(map.get(key) instanceof String){
+                resultMap.put(key,StringEscapeUtils.escapeHtml4(val.toString()));
+            }else{
+                resultMap.put(key,val);
+            }
+        }
+        str=JSON.toJSONString(resultMap);
+        final ByteArrayInputStream bais = new ByteArrayInputStream(str.getBytes());
+        return new ServletInputStream() {
+            @Override
+            public int read() throws IOException {
+                return bais.read();
+            }
+            @Override
+            public boolean isFinished() {
+                return false;
+            }
+            @Override
+            public boolean isReady() {
+                return false;
+            }
+            @Override
+            public void setReadListener(ReadListener listener) {
+            }
+        };
+    }
+
+    private String getRequestBody(InputStream stream) {
+        String line = "";
+        StringBuilder body = new StringBuilder();
+        int counter = 0;
+
+        // 读取POST提交的数据内容
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream, Charset.forName("UTF-8")));
+        try {
+            while ((line = reader.readLine()) != null) {
+                body.append(line);
+                counter++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return body.toString();
     }
 }
+

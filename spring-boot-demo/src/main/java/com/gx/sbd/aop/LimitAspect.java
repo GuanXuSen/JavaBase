@@ -13,7 +13,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.context.annotation.Configuration;
-
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 
@@ -41,9 +40,7 @@ public class LimitAspect {
 
     //Service层切点  限流
     @Pointcut("@annotation(com.gx.sbd.annotation.ServiceLimit)")
-    public void ServiceAspect() {
-
-    }
+    public void ServiceAspect() {}
 
     @Around("ServiceAspect()")
     public  Object around(ProceedingJoinPoint joinPoint) {

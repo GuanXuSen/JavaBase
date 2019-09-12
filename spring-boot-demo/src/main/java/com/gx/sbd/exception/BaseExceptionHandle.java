@@ -36,7 +36,16 @@ public class BaseExceptionHandle {
         e.printStackTrace();
         return BaseResponse.newInstance().fail("系统异常，请联系管理员！！！");
     }
-
+    /**
+     * 访问限流
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(value = BaseException.class)
+    public BaseResponse limitResponse(BaseException e){
+        e.printStackTrace();
+        return BaseResponse.newInstance().fail("访问太频繁，请稍后在试");
+    }
     /**
      * 请求路径无法找到异常
      */

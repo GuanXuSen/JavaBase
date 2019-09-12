@@ -6,6 +6,7 @@ import com.gx.demo.CommonBaseConstants;
 import com.gx.demo.excel.ExcelDTO;
 import com.gx.demo.excel.ExcelUtil;
 import com.gx.demo.utils.BaseResponse;
+import com.gx.sbd.annotation.ServiceLimit;
 import com.gx.sbd.servers.DemoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -140,6 +141,19 @@ public class DemoController {
     public Object demo2(){
         BaseResponse response = BaseResponse.newInstance();
         response.success().put(CommonBaseConstants.DATE_KEY,new Date());
+        return response;
+    }
+
+
+    /**
+     * 限流测试
+     * @return
+     */
+    @ServiceLimit(limitType = ServiceLimit.LimitType.IP)
+    @GetMapping("/limit-demo")
+    public Object limitDemo(@RequestParam("name") String name){
+        BaseResponse response = BaseResponse.newInstance();
+        response.success().put(CommonBaseConstants.DATE_KEY,name +" || "+System.currentTimeMillis());
         return response;
     }
 }
