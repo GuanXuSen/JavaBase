@@ -36,6 +36,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-tomcat')
     compile('org.springframework.boot:spring-boot-starter-thymeleaf')
     compile('org.springframework:spring-context-support')
+    compile('io.netty:netty-all:4.1.5.Final')
 
 
 //    compile(lib['hadoopCommon']){
