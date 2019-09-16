@@ -1,5 +1,7 @@
 package com.gx.sbd.netty.websocket;
 
+import com.alibaba.fastjson.JSON;
+import com.gx.sbd.netty.websocket.entity.MessageEntity;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
@@ -12,6 +14,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.websocketx.*;
 import io.netty.util.CharsetUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,7 +74,11 @@ public class NioWebSocketHandler extends SimpleChannelInboundHandler<Object> {
         ctx.flush();
     }
 
-
+    /**
+     * 获取消息并处理
+     * @param ctx
+     * @param frame
+     */
     private void handlerWebSocketFrame(ChannelHandlerContext ctx, WebSocketFrame frame){
         // 判断是否关闭链路的指令
         if (frame instanceof CloseWebSocketFrame) {
@@ -93,10 +100,26 @@ public class NioWebSocketHandler extends SimpleChannelInboundHandler<Object> {
         String request = ((TextWebSocketFrame) frame).text();
         logger.info("服务端收到：" + request);
         TextWebSocketFrame tws = new TextWebSocketFrame(ctx.channel().id() + " ：" + request);
-        // 群发
-        ChannelSupervise.send2All(tws);
-        // 返回【谁发的发给谁】
-        // ctx.channel().writeAndFlush(tws);
+        try{
+            MessageEntity msg = JSON.parseObject(request,MessageEntity.class);
+            // 群发
+            if(StringUtils.isNotBlank(msg.getSendUserId())){
+                ChannelSupervise.addChannelName(msg.getSendUserId(),ctx.channel().id().asShortText());
+            }
+            if (StringUtils.isNotBlank(msg.getToSendUserId())) {
+                ChannelSupervise.sendByName(msg.getToSendUserId(),tws);
+            }else {
+                ChannelSupervise.send2All(tws);
+            }
+
+        }catch (Exception e){
+            logger.error("非法消息",e);
+            // 返回【谁发的发给谁】
+             tws = new TextWebSocketFrame(ctx.channel().id() + " ：非法信息" );
+             ctx.channel().writeAndFlush(tws);
+        }
+
+
     }
 
     /**

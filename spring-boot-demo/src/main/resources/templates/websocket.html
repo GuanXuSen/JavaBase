@@ -25,7 +25,13 @@
             //连接打开的时候触发
             websocket.onopen = function(event){
                 var respMessage = document.getElementById("respMessage");
+                var sendMessage = document.getElementById("sendMessage");
                 respMessage.value = "建立连接";
+                sendMessage.value = "{\n" +
+                    "\"sendUserId\":\"zhangsa\",\n" +
+                    "\"sendMessage\":\"这是张三发给李四\",\n" +
+                    "\"toSendUserId\":\"lisi\"\n" +
+                    "}";
             }
         }else{
             alert("浏览器不支持WebSocket");
@@ -44,10 +50,10 @@
 </head>
 <body>
 <form onsubmit="return false">
-    <textarea style="width: 300px; height: 200px;" name="message"></textarea>
+    <textarea id="sendMessage" style="width: 300px; height: 200px;" name="message"></textarea>
     <input type="button" onclick="sendMsg(this.form.message.value)" value="发送"/><br>
     <h3>信息</h3>
-    <textarea style="width: 300px; height: 200px;" id="respMessage"></textarea>
+    <textarea id="respMessage" style="width: 300px; height: 200px;" ></textarea>
     <input type="button" value="清空" onclick="javascript:document.getElementById('respMessage').value = ''"/>
 </form>
 </body>
