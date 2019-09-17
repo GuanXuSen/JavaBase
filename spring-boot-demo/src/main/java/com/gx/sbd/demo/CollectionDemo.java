@@ -67,7 +67,7 @@ public class CollectionDemo {
      * list 拆分
      */
     public static void test(){
-        List<String> aList = new ArrayList<String>();
+        List<String> aList = Lists.newLinkedList();
         aList.add("aaa");
         aList.add("bbb");
         aList.add("ccc");
