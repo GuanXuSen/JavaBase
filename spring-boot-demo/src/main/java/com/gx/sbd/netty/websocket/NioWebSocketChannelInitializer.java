@@ -26,7 +26,7 @@ public class NioWebSocketChannelInitializer extends ChannelInitializer<SocketCha
         .addLast("aggregator",new HttpObjectAggregator(65536))
         //用于大数据的分区传输
         .addLast("http-chunked",new ChunkedWriteHandler())
-        //自定义的业务handler
+        //自定义的业务处理
         .addLast("handler",new NioWebSocketHandler());
     }
 }

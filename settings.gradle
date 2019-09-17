@@ -7,4 +7,5 @@ findProject(':base-starters:common-starter')?.name = 'common-starter'
 include 'spring-boot-presto-demo'
 include 'spring-boot-demo'
 include 'scala-spark-demo'
+include 'spring-boot-hadoop'
 

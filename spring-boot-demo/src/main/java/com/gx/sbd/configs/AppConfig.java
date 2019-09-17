@@ -3,9 +3,17 @@ package com.gx.sbd.configs;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.http.MediaType;
 
 import java.util.ArrayList;
@@ -51,4 +59,26 @@ public class AppConfig  {
         return new HttpMessageConverters(fastConverter);
     }
 
+    /**载入配置文件配置的连接工厂**/
+    @Autowired
+    RedisConnectionFactory redisConnectionFactory;
+
+    @Bean
+    public RedisTemplate redisTemplate() {
+
+        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
+        ObjectMapper om = new ObjectMapper();
+        om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        //全局开关，支持jackson在反序列是使用多态
+        om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+        jackson2JsonRedisSerializer.setObjectMapper(om);
+
+        StringRedisTemplate redisTemplate = new StringRedisTemplate();
+
+        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
+
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        return redisTemplate;
+
+    }
 }
