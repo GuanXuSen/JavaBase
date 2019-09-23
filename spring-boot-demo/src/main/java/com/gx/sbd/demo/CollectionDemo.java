@@ -1,6 +1,7 @@
 package com.gx.sbd.demo;
 
 import com.google.common.collect.Lists;
+import javafx.util.Pair;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -78,8 +79,20 @@ public class CollectionDemo {
     }
 
 
+    public static void PariTest(){
+
+        Pair<String, String> pair = new Pair<>("aku", "female");
+        String key = pair.getKey();
+        String value = pair.getValue();
+
+        System.out.println("输出："+key);
+        System.out.println("值："+value);
+
+    }
+
+
     public static void main(String[] args) {
-        test();
+        PariTest();
     }
 
 }

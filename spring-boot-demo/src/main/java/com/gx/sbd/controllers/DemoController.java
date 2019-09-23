@@ -6,6 +6,7 @@ import com.gx.demo.CommonBaseConstants;
 import com.gx.demo.excel.ExcelDTO;
 import com.gx.demo.excel.ExcelUtil;
 import com.gx.demo.utils.BaseResponse;
+import com.gx.sbd.annotation.NeedLogin;
 import com.gx.sbd.annotation.ServiceLimit;
 import com.gx.sbd.servers.DemoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -154,6 +155,22 @@ public class DemoController {
     public Object limitDemo(@RequestParam("name") String name){
         BaseResponse response = BaseResponse.newInstance();
         response.success().put(CommonBaseConstants.DATE_KEY,name +" || "+System.currentTimeMillis());
+        return response;
+    }
+
+    @NeedLogin
+    @GetMapping("/need-login")
+    public Object loginAnnotationsTest(){
+        BaseResponse response = BaseResponse.newInstance();
+        response.success();
+        return response;
+    }
+
+
+    @GetMapping("/no-need-login")
+    public Object NologinAnnotationsTest(){
+        BaseResponse response = BaseResponse.newInstance();
+        response.success();
         return response;
     }
 }
