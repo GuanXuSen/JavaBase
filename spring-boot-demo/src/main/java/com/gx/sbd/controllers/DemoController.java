@@ -168,7 +168,7 @@ public class DemoController {
 
 
     @GetMapping("/no-need-login")
-    public Object NologinAnnotationsTest(){
+    public Object noLoginAnnotationsTest(){
         BaseResponse response = BaseResponse.newInstance();
         response.success();
         return response;
