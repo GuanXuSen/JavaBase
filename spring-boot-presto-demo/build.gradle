@@ -1,16 +1,3 @@
-group 'JavaBase'
-version '1.0-SNAPSHOT'
-
-apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'war'
-
-apply from:'../config.gradle'
-
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
-
 buildscript {
     ext {
         springBootVersion = '1.5.4.RELEASE'
@@ -23,14 +10,22 @@ buildscript {
     }
 }
 
+group 'JavaBase'
+version '1.0-SNAPSHOT'
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'war'
+apply from:'../config.gradle'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
-
     compile(project(":base-starters:common-starter"))
-
     compile('org.springframework.boot:spring-boot-starter-web') //必备
     compile('org.springframework.boot:spring-boot-starter-thymeleaf') //必备
     compile('org.springframework.boot:spring-boot-starter-test')
@@ -40,18 +35,11 @@ dependencies {
    // compile('org.springframework.boot:spring-boot-starter-data-jpa')//jpa
     compile('org.springframework:spring-context-support')
   //  compile('org.springframework.boot:spring-boot-starter-mail')//mail
-
     compile('org.springframework:spring-jdbc')
-
     compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1')
-
     compile group: 'com.alibaba', name: 'druid', version: '1.1.13'
-
     compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.47'
-
     compile group: 'com.alibaba', name: 'fastjson', version: '1.2.56'
-
     compile group: 'com.facebook.presto', name: 'presto-jdbc', version: '0.224'
-
     compile group: 'com.zaxxer', name: 'HikariCP' , version: '3.2.0'
 }
