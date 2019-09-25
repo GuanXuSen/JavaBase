@@ -17,6 +17,13 @@ import java.util.List;
 public class TestDemo {
 
     public static void main(String[] args) {
+        demo3();
+    }
+
+    /**
+     * 树形测试
+     */
+    public static void demo1(){
         TreeBuilder tb = new TreeBuilder();
         List<Node> allNodes = new ArrayList<Node>();
         allNodes.add(new Node(1, 0, "节点1"));
@@ -51,6 +58,46 @@ public class TestDemo {
         List<Node> resultList = tb.getLeafChildren(new ArrayList<Node>(), children);
         for (Node n : resultList) {
             System.out.println(JSON.toJSONString(n));
+        }
+    }
+
+
+    public static void demo2(){
+
+
+        TaskThread taskThreadA = new TaskThread("线程 A 号： ");
+        TaskThread taskThreadB = new TaskThread("线程 B 号： ");
+        TaskThread taskThreadC = new TaskThread("线程 C 号： ");
+        TaskThread taskThreadD = new TaskThread("线程 D 号： ");
+        TaskThread taskThreadE = new TaskThread("线程 E 号： ");
+        TaskThread taskThreadF = new TaskThread("线程 F 号： ");
+        TaskThread taskThreadG = new TaskThread("线程 G 号： ");
+        TaskThread taskThreadH = new TaskThread("线程 H 号： ");
+        TaskThread taskThreadI = new TaskThread("线程 I 号： ");
+        TaskThread taskThreadJ = new TaskThread("线程 J 号： ");
+        TaskThread taskThreadK = new TaskThread("线程 K 号： ");
+        TaskThread taskThreadL = new TaskThread("线程 L 号： ");
+        taskThreadA.start();
+        taskThreadB.start();
+        taskThreadC.start();
+        taskThreadD.start();
+        taskThreadE.start();
+        taskThreadF.start();
+        taskThreadG.start();
+        taskThreadH.start();
+        taskThreadI.start();
+        taskThreadJ.start();
+        taskThreadK.start();
+        taskThreadL.start();
+
+
+
+    }
+
+    public static void demo3(){
+
+        for (int i = 0; i < 10 ; i++) {
+            new TaskThread("线程 "+i+" 号： ").start();
         }
 
     }
