@@ -115,6 +115,8 @@ public class BioServer {
 //        }
 //        return outSteam.toString();
 
+//        DataInputStream dataInputStream = new DataInputStream(is);
+//        String rest = dataInputStream.readUTF();
         int count = is.available();
         byte[] b = new byte[count];
         is.read(b);
