@@ -20,7 +20,9 @@ public class StarterRun implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        logger.info("websocket 开始启动");
+        logger.info("websocket:8888 开始启动 ");
         NettyServer.start();
+
+
     }
 }

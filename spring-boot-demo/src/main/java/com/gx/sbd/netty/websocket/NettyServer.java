@@ -32,7 +32,7 @@ public class NettyServer {
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new NioWebSocketChannelInitializer());
 
-            Channel channel = bootstrap.bind(8081).sync().channel();
+            Channel channel = bootstrap.bind(8888).sync().channel();
             logger.info("webSocket服务器启动成功：{}",channel);
             channel.closeFuture().sync();
         } catch (InterruptedException e) {

@@ -71,8 +71,6 @@ public class BaseResponse implements Serializable {
     }
 
 
-
-
     public BaseResponse success(){
         return this.success(ResultCodeEnum.SUCCESS.getMessage());
     }

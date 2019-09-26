@@ -20,7 +20,7 @@ public class HttpServer {
 
     private static final Logger logger = LoggerFactory.getLogger(NettyServer.class);
 
-    private static void start(){
+    public static void start(){
         logger.info("正在启动 http 服务器");
         ServerBootstrap bootstrap = null;
         NioEventLoopGroup group = null;
@@ -34,7 +34,7 @@ public class HttpServer {
                     .option(ChannelOption.SO_BACKLOG, 128) // determining the number of connections queued
                     .childOption(ChannelOption.SO_KEEPALIVE, Boolean.TRUE);
 
-            Channel channel = bootstrap.bind(8888).sync().channel();
+            Channel channel = bootstrap.bind(9999).sync().channel();
 
             logger.info("http 服务器启动成功：{}",channel);
             channel.closeFuture().sync();
