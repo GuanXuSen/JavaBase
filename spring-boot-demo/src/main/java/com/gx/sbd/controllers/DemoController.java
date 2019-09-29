@@ -8,6 +8,7 @@ import com.gx.demo.excel.ExcelUtil;
 import com.gx.demo.utils.BaseResponse;
 import com.gx.sbd.annotation.NeedLogin;
 import com.gx.sbd.annotation.ServiceLimit;
+import com.gx.sbd.demo.ThreadLocalContext;
 import com.gx.sbd.servers.DemoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -173,4 +174,19 @@ public class DemoController {
         response.success();
         return response;
     }
+
+    @GetMapping("/local-test")
+    public Object localTest(){
+        BaseResponse response = BaseResponse.newInstance();
+        response.success().put(CommonBaseConstants.DATE_KEY, ThreadLocalContext.getLocal());
+        return response;
+    }
+
+    @GetMapping("/local-test2")
+    public Object localTest2(){
+        BaseResponse response = BaseResponse.newInstance();
+        response.success().put(CommonBaseConstants.DATE_KEY, ThreadLocalContext.getLocal());
+        return response;
+    }
+
 }
