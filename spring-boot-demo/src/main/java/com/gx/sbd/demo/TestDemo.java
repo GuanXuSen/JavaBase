@@ -1,6 +1,8 @@
 package com.gx.sbd.demo;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.graph.GraphBuilder;
+import com.google.common.graph.MutableGraph;
 import com.gx.demo.utils.Node;
 import com.gx.demo.utils.TreeBuilder;
 
@@ -26,7 +28,7 @@ public class TestDemo {
 //        System.out.println(changeToBig(new BigDecimal("188888.1")));
 //        System.out.println(changeToBig(new BigDecimal("1123101.88")));
 
-        System.out.println(changeToBig(new BigDecimal("100000010000.23")));
+//        System.out.println(changeToBig(new BigDecimal("100000010000.23")));
 
 //        Double db = 55.89;
 //        String str = "22.99";
@@ -39,6 +41,8 @@ public class TestDemo {
 //
 //        System.out.println(new BigDecimal(db));
 //        System.out.println(new BigDecimal(str));
+
+        test5();
     }
 
     /**
@@ -253,6 +257,22 @@ public class TestDemo {
 
 
     public static void test5(){
+
+        MutableGraph<Integer> graphs = GraphBuilder.directed().allowsSelfLoops(true).build();
+
+        graphs.addNode(1);
+        graphs.addNode(2);
+        graphs.addNode(3);
+        graphs.addNode(4);
+        graphs.addNode(5);
+
+        graphs.putEdge(1,2);
+        graphs.putEdge(2,3);
+        graphs.putEdge(3,4);
+        graphs.putEdge(4,5);
+        graphs.putEdge(5,1);
+
+        System.out.println(graphs);
 
     }
 
